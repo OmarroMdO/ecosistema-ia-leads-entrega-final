@@ -8,7 +8,7 @@ El proyecto automatiza parte del proceso de gestión comercial de leads usando A
 
 Para facilitar la corrección, se agregó una guía específica con instrucciones de ejecución y un mapa de evidencias por criterio de la rúbrica:
 
-- [documentacion/guia_revision_rubrica_ejecucion.md](documentacion/guia_revision_rubrica_ejecucion.md)
+- [Abrir guía de revisión, rúbrica y ejecución](documentacion/guia_revision_rubrica_ejecucion.md)
 
 ## Caso de uso
 
