@@ -4,6 +4,12 @@ Trabajo final: **Ecosistema de Automatización IA Autónomo para gestión de lea
 
 El proyecto automatiza parte del proceso de gestión comercial de leads usando Airtable, Make, OpenAI y Gmail, manteniendo una instancia de revisión humana antes del envío final.
 
+## Guía de revisión, rúbrica y ejecución
+
+Para facilitar la corrección, se agregó una guía específica con instrucciones de ejecución y un mapa de evidencias por criterio de la rúbrica:
+
+- `documentacion/guia_revision_rubrica_ejecucion.md`
+
 ## Caso de uso
 
 El sistema recibe leads en Airtable, analiza la información con inteligencia artificial, clasifica la prioridad comercial y genera una respuesta sugerida.
