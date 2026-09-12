@@ -161,3 +161,104 @@ Para ejecutar el escenario:
 ## 11. Estado de la entrega
 
 La entrega contiene los archivos, configuración y documentación solicitados en la consigna, organizados en carpetas separadas y con evidencias verificables para los criterios principales de revisión.
+
+
+## Actualización final según devolución del profesor
+
+Se realizaron ajustes adicionales para reforzar los puntos observados en la devolución privada del profesor: interfaz KPI, HITL real, evidencias verificables y lectura más clara para la corrección automática/humana.
+
+### Interfaz KPI
+
+Se creó una interfaz en Airtable llamada **Dashboard KPI Leads** para visualizar indicadores del ecosistema.
+
+La interfaz muestra:
+
+- Total de leads.
+- Distribución por prioridad.
+- Datos visibles del estado general del sistema.
+
+Evidencia relacionada:
+
+- `evidencias/09_airtable_interfaz_kpi_dashboard.png`
+
+Nota: Airtable no permitió generar enlace público web de la interfaz desde el plan utilizado. Por eso se deja evidencia visual directa de la interfaz implementada.
+
+### HITL implementado
+
+Se ajustó el flujo para incorporar una intervención humana explícita antes del envío final.
+
+El flujo corregido funciona así:
+
+1. Airtable detecta un lead en estado `Pendiente`.
+2. OpenAI analiza el lead y genera una respuesta sugerida.
+3. Airtable guarda la respuesta IA y marca el lead como `Procesado por IA`.
+4. Gmail 21 envía un aviso al revisor humano.
+5. Tools 22 pausa el flujo durante 5 minutos.
+6. Airtable 23 vuelve a leer el mismo lead.
+7. Router 24 decide según la intervención humana:
+   - Si el lead fue aprobado, Gmail 25 envía la respuesta final.
+   - Si el lead no fue aprobado, Airtable 26 lo deja en estado `Esperando aprobación humana`.
+
+### Condiciones de aprobación humana
+
+La rama aprobada del Router 24 requiere:
+
+- `Aprobado = true`
+- `Estado = Aprobado por humano`
+- `Estado de envio = No enviado`
+- `Error != true`
+
+Esto evita que el correo final se envíe sin intervención humana previa.
+
+### Rama standby
+
+Si el registro no cumple las condiciones de aprobación, el flujo pasa por la rama fallback y actualiza el lead como:
+
+- `Estado = Esperando aprobación humana`
+- `Estado de envio = No enviado`
+
+De esta forma el lead queda detenido hasta una revisión posterior.
+
+### Manejo de errores actualizado
+
+El escenario mantiene el Error Handler de OpenAI y suma manejo de error para el nuevo Gmail final.
+
+Módulos de error:
+
+- OpenAI 3 → Airtable 19 → Retry 20
+- Gmail 25 → Airtable 28 → Retry 29
+
+Cuando ocurre un error, se registra automáticamente en la tabla `Errores` de Airtable con:
+
+- Fecha de error
+- Lead relacionado
+- Módulo afectado
+- Tipo de error
+- Detalle del error
+- Estado del error
+
+### Evidencias verificables agregadas
+
+Las evidencias nuevas incorporadas al repositorio son:
+
+- `evidencias/10_make_flujo_hitl_aviso_espera_revision.png`
+- `evidencias/12_email_aviso_humano_hitl.png`
+- `evidencias/13_make_ejecucion_hitl_aprobado_exitosa.png`
+- `evidencias/14_airtable_hitl_aviso_visible_enviado.png`
+- `evidencias/15_email_respuesta_final_hitl.png`
+
+### Blueprint actualizado
+
+El blueprint actualizado se encuentra en:
+
+- `blueprint/make_blueprint_final.json`
+
+Este archivo contiene la versión final del escenario con:
+
+- Aviso humano.
+- Pausa de espera.
+- Relectura del lead.
+- Router de aprobación humana.
+- Rama standby.
+- Envío final aprobado.
+- Manejo de errores del envío final.
